@@ -68,7 +68,17 @@ async function callOpenAI(model, prompt) {
 
       const data = await response.json();
       // GPT-5 response structure: choices[0].text
-      return data.choices?.[0]?.text || data.output || JSON.stringify(data);
+      const result = data.choices?.[0]?.text || data.output;
+      // Ensure we always return a string
+      if (typeof result === 'string') {
+        return result;
+      }
+      // If result is an object, try to extract text
+      if (result && typeof result === 'object') {
+        return result.text || result.content || JSON.stringify(result);
+      }
+      // Fallback: return full response as JSON
+      return JSON.stringify(data);
     } else {
       // GPT-4 and older models use chat/completions
       const response = await openai.chat.completions.create({
@@ -92,7 +102,9 @@ async function callAnthropic(model, prompt) {
       max_tokens: 4096,
       messages: [{ role: 'user', content: prompt }],
     });
-    return response.content[0].text;
+    const text = response.content[0].text;
+    // Ensure we return a string
+    return typeof text === 'string' ? text : JSON.stringify(text);
   } catch (error) {
     console.error('Anthropic Error:', error);
     return `Error: ${error.message}`;
@@ -105,7 +117,9 @@ async function callGoogle(model, prompt) {
     const genModel = googleAI.getGenerativeModel({ model: model });
     const result = await genModel.generateContent(prompt);
     const response = await result.response;
-    return response.text();
+    const text = response.text();
+    // Ensure we return a string
+    return typeof text === 'string' ? text : JSON.stringify(text);
   } catch (error) {
     console.error('Google Error:', error);
     return `Error: ${error.message}`;
