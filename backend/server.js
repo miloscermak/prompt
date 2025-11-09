@@ -35,12 +35,12 @@ const googleAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 // Model configurations
 const MODEL_CONFIG = {
-  'gpt-5-instant': { provider: 'openai', model: 'gpt-4-turbo-preview' }, // Placeholder - update when GPT-5 is available
-  'gpt-5-thinking': { provider: 'openai', model: 'gpt-4-turbo-preview' }, // Placeholder - update when GPT-5 is available
-  'gemini-2.5-flash': { provider: 'google', model: 'gemini-1.5-flash' }, // Placeholder - update when Gemini 2.5 is available
-  'gemini-2.5-pro': { provider: 'google', model: 'gemini-1.5-pro' }, // Placeholder - update when Gemini 2.5 is available
-  'claude-opus-4.1': { provider: 'anthropic', model: 'claude-opus-4-20250514' }, // Placeholder - update when Opus 4.1 is available
-  'claude-sonnet-4.5': { provider: 'anthropic', model: 'claude-sonnet-4-20250514' }, // Placeholder - update when Sonnet 4.5 is available
+  'gpt-5-instant': { provider: 'openai', model: 'gpt-4-turbo' }, // Using GPT-4 Turbo as placeholder for GPT-5
+  'gpt-5-thinking': { provider: 'openai', model: 'gpt-4' }, // Using GPT-4 as placeholder for GPT-5 Thinking
+  'gemini-2.5-flash': { provider: 'google', model: 'gemini-1.5-flash-latest' }, // Using Gemini 1.5 Flash
+  'gemini-2.5-pro': { provider: 'google', model: 'gemini-1.5-pro-latest' }, // Using Gemini 1.5 Pro
+  'claude-opus-4.1': { provider: 'anthropic', model: 'claude-3-opus-20240229' }, // Using Claude 3 Opus
+  'claude-sonnet-4.5': { provider: 'anthropic', model: 'claude-3-5-sonnet-20241022' }, // Using Claude 3.5 Sonnet
 };
 
 // Function to call OpenAI
