@@ -46,12 +46,37 @@ const MODEL_CONFIG = {
 // Function to call OpenAI
 async function callOpenAI(model, prompt) {
   try {
-    const response = await openai.chat.completions.create({
-      model: model,
-      messages: [{ role: 'user', content: prompt }],
-      temperature: 0.7,
-    });
-    return response.choices[0].message.content;
+    // GPT-5 models use the new v1/responses endpoint
+    if (model.startsWith('gpt-5')) {
+      const response = await fetch('https://api.openai.com/v1/responses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: model,
+          input: prompt,
+          // GPT-5 only supports default temperature (1)
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error?.message || `API error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data.output || data.text || data.content;
+    } else {
+      // GPT-4 and older models use chat/completions
+      const response = await openai.chat.completions.create({
+        model: model,
+        messages: [{ role: 'user', content: prompt }],
+        temperature: 0.7,
+      });
+      return response.choices[0].message.content;
+    }
   } catch (error) {
     console.error('OpenAI Error:', error);
     return `Error: ${error.message}`;
