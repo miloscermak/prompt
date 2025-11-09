@@ -68,9 +68,9 @@ async function callOpenAI(model, prompt) {
 
       const data = await response.json();
 
-      // GPT-5 returns array of objects with type "message"
-      if (Array.isArray(data)) {
-        const messageObj = data.find(item => item.type === 'message');
+      // GPT-5 returns object with "output" array containing message objects
+      if (data.output && Array.isArray(data.output)) {
+        const messageObj = data.output.find(item => item.type === 'message');
         if (messageObj?.content && Array.isArray(messageObj.content)) {
           const textContent = messageObj.content.find(c => c.type === 'output_text');
           if (textContent?.text) {
@@ -85,8 +85,8 @@ async function callOpenAI(model, prompt) {
         return result;
       }
 
-      // Last resort: return JSON
-      return JSON.stringify(data);
+      // Last resort: return error message instead of full JSON (which can crash connection)
+      return 'Error: Unable to parse GPT-5 response';
     } else {
       // GPT-4 and older models use chat/completions
       const response = await openai.chat.completions.create({
