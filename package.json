@@ -1,0 +1,14 @@
+{
+  "name": "ai-model-tester",
+  "version": "1.0.0",
+  "description": "AI Model Testing Application",
+  "scripts": {
+    "install-all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev": "echo 'Spusťte backend a frontend v separátních terminálech:\\n  Terminal 1: cd backend && npm start\\n  Terminal 2: cd frontend && npm run dev'",
+    "backend": "cd backend && npm start",
+    "frontend": "cd frontend && npm run dev"
+  },
+  "keywords": ["ai", "testing", "openai", "gemini", "claude"],
+  "author": "",
+  "license": "MIT"
+}
