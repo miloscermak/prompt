@@ -134,7 +134,7 @@ async function callGoogle(model, prompt) {
   }
 }
 
-// Main endpoint to test models
+// Main endpoint to test models (with streaming)
 app.post('/api/test', async (req, res) => {
   try {
     const { prompt, models, count } = req.body;
@@ -147,7 +147,10 @@ app.post('/api/test', async (req, res) => {
       return res.status(400).json({ error: 'Count must be between 1 and 100' });
     }
 
-    const results = [];
+    // Set up Server-Sent Events
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
 
     // Generate responses for each selected model
     for (const modelKey of models) {
@@ -176,21 +179,27 @@ app.post('/api/test', async (req, res) => {
             response = 'Unknown provider';
         }
 
-        results.push({
+        const result = {
           model: modelKey,
           responseNumber: i + 1,
           timestamp: new Date().toISOString(),
           response: response,
-        });
+        };
+
+        // Send result immediately via SSE
+        res.write(`data: ${JSON.stringify(result)}\n\n`);
 
         console.log(`Completed ${modelKey} response ${i + 1}/${count}`);
       }
     }
 
-    res.json({ success: true, results });
+    // Send completion signal
+    res.write('data: {"done": true}\n\n');
+    res.end();
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ error: error.message });
+    res.write(`data: {"error": "${error.message}"}\n\n`);
+    res.end();
   }
 });
 

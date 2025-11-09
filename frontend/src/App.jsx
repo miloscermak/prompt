@@ -47,22 +47,55 @@ function App() {
     setLoading(true);
     setError('');
     setResults([]);
-    setProgress('Odesílám požadavky na AI modely...');
+    setProgress('Generuji odpovědi...');
 
     try {
-      const response = await axios.post('/api/test', {
-        prompt,
-        models: selectedModels,
-        count: parseInt(count),
+      const response = await fetch('/api/test', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt,
+          models: selectedModels,
+          count: parseInt(count),
+        }),
       });
 
-      setResults(response.data.results);
-      setProgress('');
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value);
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = JSON.parse(line.slice(6));
+
+            if (data.done) {
+              setProgress('Hotovo!');
+              setLoading(false);
+            } else if (data.error) {
+              setError(data.error);
+              setLoading(false);
+            } else {
+              // Add result immediately to the list
+              setResults((prev) => {
+                const updated = [...prev, data];
+                setProgress(`Přijato odpovědí: ${updated.length}`);
+                return updated;
+              });
+            }
+          }
+        }
+      }
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.error || 'Nastala chyba při komunikaci se servrem');
-      setProgress('');
-    } finally {
+      setError('Nastala chyba při komunikaci se servrem');
       setLoading(false);
     }
   };
