@@ -67,17 +67,25 @@ async function callOpenAI(model, prompt) {
       }
 
       const data = await response.json();
-      // GPT-5 response structure: choices[0].text
+
+      // GPT-5 returns array of objects with type "message"
+      if (Array.isArray(data)) {
+        const messageObj = data.find(item => item.type === 'message');
+        if (messageObj?.content && Array.isArray(messageObj.content)) {
+          const textContent = messageObj.content.find(c => c.type === 'output_text');
+          if (textContent?.text) {
+            return textContent.text;
+          }
+        }
+      }
+
+      // Fallback: try standard structure
       const result = data.choices?.[0]?.text || data.output;
-      // Ensure we always return a string
       if (typeof result === 'string') {
         return result;
       }
-      // If result is an object, try to extract text
-      if (result && typeof result === 'object') {
-        return result.text || result.content || JSON.stringify(result);
-      }
-      // Fallback: return full response as JSON
+
+      // Last resort: return JSON
       return JSON.stringify(data);
     } else {
       // GPT-4 and older models use chat/completions
