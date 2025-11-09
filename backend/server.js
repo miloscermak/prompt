@@ -67,7 +67,8 @@ async function callOpenAI(model, prompt) {
       }
 
       const data = await response.json();
-      return data.output || data.text || data.content;
+      // GPT-5 response structure
+      return data.choices?.[0]?.message?.content || data.output || data.text || JSON.stringify(data);
     } else {
       // GPT-4 and older models use chat/completions
       const response = await openai.chat.completions.create({
