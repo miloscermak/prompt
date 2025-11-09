@@ -2,6 +2,14 @@
 
 Aplikace pro testování a porovnávání odpovědí různých AI modelů (OpenAI, Google Gemini, Anthropic Claude).
 
+## 🌐 Rychlé nasazení online
+
+**Chceš aplikaci spustit online během 5 minut?**
+
+👉 **[Návod na deployment na Railway](./DEPLOYMENT.md)** - krok po kroku průvodce
+
+Railway nabízí free tier ($5 kredit/měsíc) a automaticky nasadí celou aplikaci z GitHubu!
+
 ## ✨ Funkce
 
 - **Testování více modelů současně**: Vyberte si z 6 top AI modelů
