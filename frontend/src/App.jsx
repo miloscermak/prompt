@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const MODELS = {
   openai: [
-    { id: 'gpt-5-instant', label: 'GPT-5 Instant' },
-    { id: 'gpt-5-thinking', label: 'GPT-5 Thinking' },
+    { id: 'gpt-5-mini', label: 'GPT-5 Mini' },
+    { id: 'gpt-5.1', label: 'GPT-5.1' },
   ],
   gemini: [
     { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },

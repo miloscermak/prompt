@@ -35,8 +35,8 @@ const googleAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 // Model configurations
 const MODEL_CONFIG = {
-  'gpt-5-instant': { provider: 'openai', model: 'gpt-5' }, // GPT-5 (August 2025)
-  'gpt-5-thinking': { provider: 'openai', model: 'gpt-5-pro' }, // GPT-5 Pro with advanced reasoning (October 2025)
+  'gpt-5.1': { provider: 'openai', model: 'gpt-5.1-2025-11-13' }, // GPT-5.1 (November 2025)
+  'gpt-5-mini': { provider: 'openai', model: 'gpt-5-mini-2025-08-07' }, // GPT-5 Mini (August 2025)
   'gemini-2.5-flash': { provider: 'google', model: 'gemini-2.5-flash' }, // Gemini 2.5 Flash (June 2025)
   'gemini-2.5-pro': { provider: 'google', model: 'gemini-2.5-pro' }, // Gemini 2.5 Pro (June 2025)
   'claude-opus-4.1': { provider: 'anthropic', model: 'claude-opus-4-1-20250805' }, // Claude Opus 4.1 (August 2025)
