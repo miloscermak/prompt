@@ -166,18 +166,23 @@ app.post('/api/test', async (req, res) => {
       for (let i = 0; i < count; i++) {
         let response;
 
-        switch (config.provider) {
-          case 'openai':
-            response = await callOpenAI(config.model, prompt);
-            break;
-          case 'anthropic':
-            response = await callAnthropic(config.model, prompt);
-            break;
-          case 'google':
-            response = await callGoogle(config.model, prompt);
-            break;
-          default:
-            response = 'Unknown provider';
+        try {
+          switch (config.provider) {
+            case 'openai':
+              response = await callOpenAI(config.model, prompt);
+              break;
+            case 'anthropic':
+              response = await callAnthropic(config.model, prompt);
+              break;
+            case 'google':
+              response = await callGoogle(config.model, prompt);
+              break;
+            default:
+              response = 'Unknown provider';
+          }
+        } catch (err) {
+          console.error(`Error calling ${modelKey}:`, err);
+          response = `Error: ${err.message}`;
         }
 
         const result = {
@@ -187,8 +192,21 @@ app.post('/api/test', async (req, res) => {
           response: response,
         };
 
-        // Send result immediately via SSE
-        res.write(`data: ${JSON.stringify(result)}\n\n`);
+        // Send result immediately via SSE with safe JSON encoding
+        try {
+          const jsonData = JSON.stringify(result);
+          res.write(`data: ${jsonData}\n\n`);
+        } catch (jsonErr) {
+          console.error('JSON stringify error:', jsonErr);
+          // Send error response instead
+          const errorResult = {
+            model: modelKey,
+            responseNumber: i + 1,
+            timestamp: new Date().toISOString(),
+            response: 'Error: Unable to serialize response',
+          };
+          res.write(`data: ${JSON.stringify(errorResult)}\n\n`);
+        }
 
         console.log(`Completed ${modelKey} response ${i + 1}/${count}`);
       }
