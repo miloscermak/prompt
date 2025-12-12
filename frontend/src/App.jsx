@@ -13,7 +13,7 @@ const MODELS = {
   ],
   claude: [
     { id: 'claude-sonnet-4.5', label: 'Claude Sonnet 4.5' },
-    { id: 'claude-opus-4.1', label: 'Claude Opus 4.1' },
+    { id: 'claude-opus-4.5', label: 'Claude Opus 4.5' },
   ],
 };
 

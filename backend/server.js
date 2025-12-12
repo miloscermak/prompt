@@ -40,7 +40,7 @@ const MODEL_CONFIG = {
   'gemini-2.5-flash': { provider: 'google', model: 'gemini-2.5-flash' }, // Gemini 2.5 Flash (June 2025)
   'gemini-2.5-pro': { provider: 'google', model: 'gemini-2.5-pro' }, // Gemini 2.5 Pro (June 2025)
   'gemini-3-pro-preview': { provider: 'google', model: 'gemini-3-pro-preview' }, // Gemini 3 Pro Preview (November 2025)
-  'claude-opus-4.1': { provider: 'anthropic', model: 'claude-opus-4-1-20250805' }, // Claude Opus 4.1 (August 2025)
+  'claude-opus-4.5': { provider: 'anthropic', model: 'claude-opus-4-5-20251101' }, // Claude Opus 4.5 (November 2025)
   'claude-sonnet-4.5': { provider: 'anthropic', model: 'claude-sonnet-4-5-20250929' }, // Claude Sonnet 4.5 (September 2025)
 };
 
