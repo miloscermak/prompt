@@ -35,7 +35,7 @@ const googleAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 // Model configurations
 const MODEL_CONFIG = {
-  'gpt-5.1': { provider: 'openai', model: 'gpt-5.1-2025-11-13' }, // GPT-5.1 (November 2025)
+  'gpt-5.2': { provider: 'openai', model: 'gpt-5.2-2025-12-11' }, // GPT-5.2 (December 2025)
   'gpt-5-mini': { provider: 'openai', model: 'gpt-5-mini-2025-08-07' }, // GPT-5 Mini (August 2025)
   'gemini-2.5-flash': { provider: 'google', model: 'gemini-2.5-flash' }, // Gemini 2.5 Flash (June 2025)
   'gemini-2.5-pro': { provider: 'google', model: 'gemini-2.5-pro' }, // Gemini 2.5 Pro (June 2025)

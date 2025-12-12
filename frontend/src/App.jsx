@@ -4,7 +4,7 @@ import axios from 'axios';
 const MODELS = {
   openai: [
     { id: 'gpt-5-mini', label: 'GPT-5 Mini' },
-    { id: 'gpt-5.1', label: 'GPT-5.1' },
+    { id: 'gpt-5.2', label: 'GPT-5.2' },
   ],
   gemini: [
     { id: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash' },
